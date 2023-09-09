@@ -3,6 +3,7 @@
 package keeper
 
 import (
+	"errors"
 	"math/big"
 
 	tmtypes "github.com/cometbft/cometbft/types"
@@ -244,6 +245,10 @@ func (k *Keeper) ApplyTransaction(ctx sdk.Context, tx *ethtypes.Transaction) (*t
 
 	// reset the gas meter for current cosmos transaction
 	k.ResetGasMeterAndConsumeGas(ctx, totalGasUsed)
+
+	if len(res.VmError) > 0 {
+		return res, errors.New(res.VmError)
+	}
 	return res, nil
 }
 

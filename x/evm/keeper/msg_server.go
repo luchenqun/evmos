@@ -44,7 +44,7 @@ func (k *Keeper) EthereumTx(goCtx context.Context, msg *types.MsgEthereumTx) (*t
 	}
 
 	response, err := k.ApplyTransaction(ctx, tx)
-	if err != nil {
+	if err != nil && response == nil {
 		return nil, errorsmod.Wrap(err, "failed to apply transaction")
 	}
 
@@ -127,7 +127,7 @@ func (k *Keeper) EthereumTx(goCtx context.Context, msg *types.MsgEthereumTx) (*t
 		),
 	})
 
-	return response, nil
+	return response, err
 }
 
 // UpdateParams implements the gRPC MsgServer interface. When an UpdateParams
