@@ -3,6 +3,7 @@
 package cosmos
 
 import (
+	"github.com/evmos/evmos/v15/cmd/config"
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
@@ -34,6 +35,14 @@ func (mpd MinGasPriceDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate 
 	}
 
 	minGasPrice := mpd.feesKeeper.GetParams(ctx).MinGasPrice
+
+	// Ensure that the provided fees meets a minimum threshold for the validator,
+	// if this is a CheckTx. This is only for local mempool purposes, and thus
+	// is only ran on CheckTx.
+	localGasPrice := ctx.MinGasPrices().AmountOf(config.BaseDenom)
+	if ctx.IsCheckTx() && localGasPrice.GT(minGasPrice) {
+		minGasPrice = localGasPrice
+	}
 
 	// Short-circuit if min gas price is 0 or if simulating
 	if minGasPrice.IsZero() || simulate {

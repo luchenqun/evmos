@@ -15,6 +15,7 @@ var execTypes = []struct {
 	isCheckTx bool
 	simulate  bool
 }{
+	{"checkTx", true, false},
 	{"deliverTx", false, false},
 	{"deliverTxSimulate", false, true},
 }
@@ -33,6 +34,7 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 		expPass             bool
 		errMsg              string
 		allowPassOnSimulate bool
+		allowPassOnCheck    bool
 	}{
 		{
 			"invalid cosmos tx type",
@@ -41,6 +43,7 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 			},
 			false,
 			"invalid transaction type",
+			false,
 			false,
 		},
 		{
@@ -55,7 +58,8 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 				return txBuilder.GetTx()
 			},
 			true,
-			"",
+			"provided fee < minimum global fee",
+			true,
 			false,
 		},
 		{
@@ -71,7 +75,8 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 			},
 			true,
 			"",
-			false,
+			true,
+			true,
 		},
 		{
 			"valid cosmos tx with MinGasPrices = 10, gasPrice = 10",
@@ -86,7 +91,8 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 			},
 			true,
 			"",
-			false,
+			true,
+			true,
 		},
 		{
 			"invalid cosmos tx with MinGasPrices = 10, gasPrice = 0",
@@ -102,6 +108,7 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 			false,
 			"provided fee < minimum global fee",
 			true,
+			false,
 		},
 		{
 			"invalid cosmos tx with wrong denom",
@@ -117,6 +124,23 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 			false,
 			"provided fee < minimum global fee",
 			true,
+			false,
+		},
+		{
+			"valid cosmos tx with MinGasPrices = 0, gasPrice = 0, LocalMinGasPrices = 1",
+			func() sdk.Tx {
+				params := suite.app.FeeMarketKeeper.GetParams(suite.ctx)
+				params.MinGasPrice = sdk.NewDec(0)
+				err := suite.app.FeeMarketKeeper.SetParams(suite.ctx, params)
+				suite.Require().NoError(err)
+
+				txBuilder := suite.CreateTestCosmosTxBuilder(sdkmath.NewInt(0), denom, &testMsg)
+				return txBuilder.GetTx()
+			},
+			true,
+			"",
+			true,
+			false,
 		},
 	}
 
@@ -128,7 +152,9 @@ func (suite *AnteTestSuite) TestMinGasPriceDecorator() {
 				dec := cosmosante.NewMinGasPriceDecorator(suite.app.FeeMarketKeeper, suite.app.EvmKeeper)
 				_, err := dec.AnteHandle(ctx, tc.malleate(), et.simulate, testutil.NextFn)
 
-				if tc.expPass || (et.simulate && tc.allowPassOnSimulate) {
+				if (tc.expPass && et.name == "deliverTx") ||
+					(et.simulate && tc.allowPassOnSimulate && et.name == "deliverTxSimulate") ||
+					(tc.allowPassOnCheck && et.name == "checkTx") {
 					suite.Require().NoError(err, tc.name)
 				} else {
 					suite.Require().Error(err, tc.name)
