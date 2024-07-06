@@ -23,6 +23,9 @@ var (
 		regexEIP155,
 		regexEpochSeparator,
 		regexEpoch))
+
+	// DepassEvmChainID depass reset evm chain id from 9000 to 168168
+	DepassEvmChainID int64 = 168168
 )
 
 // IsValidChainID returns false if the given chain identifier is incorrectly formatted.
