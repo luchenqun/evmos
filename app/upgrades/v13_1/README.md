@@ -57,7 +57,7 @@
         "description": "reset evm chain id from 9000 to 168168",
         "plan": {
           "name": "v13.1.0",
-          "info": "{\"binaries\":{\"darwin/arm64\":\"https://github.com/evmos/evmos/releases/download/v16.0.0/evmos_16.0.0_Darwin_arm64.tar.gz?checksum=db85391340c5d6eaec460d355b8ca000dd0ed06b6f2338d24b20eb3ab32d745a\",\"darwin/amd64\":\"https://github.com/evmos/evmos/releases/download/v16.0.0/evmos_16.0.0_Darwin_amd64.tar.gz?checksum=98c9074e81998cb939c192a9982de93119657e7f7020982eb7629e45bd951a04\",\"linux/arm64\":\"https://github.com/evmos/evmos/releases/download/v16.0.0/evmos_16.0.0_Linux_arm64.tar.gz?checksum=ecfffdaadd0e05058b78a2c24bdcb763975e95236eb4a63e72c0be7a0ad30b6d\",\"linux/amd64\":\"https://github.com/evmos/evmos/releases/download/v16.0.0/evmos_16.0.0_Linux_amd64.tar.gz?checksum=dc55e04c7f12768fb32beb1d06f3d113e76059b76d1ac5f13657c8fccf5fc309\"}}",
+          "info": "",
           "height": "120",
           "time": "0001-01-01T00:00:00Z",
           "upgraded_client_state": null
