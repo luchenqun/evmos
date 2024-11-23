@@ -26,6 +26,9 @@ var (
 
 	// DepassEvmChainID depass reset evm chain id from 9000 to 168168
 	DepassEvmChainID int64 = 168168
+
+	// DepassCosmosChainID depass reset evm chain id from 9000 to 168168
+	DepassCosmosChainID string = "depass_168168-1"
 )
 
 // IsValidChainID returns false if the given chain identifier is incorrectly formatted.

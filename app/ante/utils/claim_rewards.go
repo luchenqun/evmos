@@ -20,6 +20,10 @@ func ClaimStakingRewardsIfNecessary(
 	addr sdk.AccAddress,
 	amount sdk.Coins,
 ) error {
+	// if no need fees (when gasprice is 0)
+	if amount.Empty() {
+		return nil
+	}
 	stakingDenom := stakingKeeper.BondDenom(ctx)
 	found, amountInStakingDenom := amount.Find(stakingDenom)
 	if !found {

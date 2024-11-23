@@ -189,7 +189,11 @@ func (b *Backend) GetTransactionReceipt(hash common.Hash) (map[string]interface{
 
 	from, err := ethMsg.GetSender(chainID.ToInt())
 	if err != nil {
-		return nil, err
+		// try the previous evmos chain id before upgrage
+		from, err = ethMsg.GetSender(big.NewInt(9000))
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// parse tx logs from events

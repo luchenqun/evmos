@@ -543,12 +543,12 @@ func startInProcess(ctx *server.Context, clientCtx client.Context, opts StartOpt
 	)
 
 	if config.JSONRPC.Enable {
-		genDoc, err := genDocProvider()
+		//genDoc, err := genDocProvider()
 		if err != nil {
 			return err
 		}
 
-		clientCtx := clientCtx.WithChainID(genDoc.ChainID)
+		clientCtx := clientCtx.WithChainID(evmostypes.DepassCosmosChainID)
 
 		tmEndpoint := "/websocket"
 		tmRPCAddr := cfg.RPC.ListenAddress
