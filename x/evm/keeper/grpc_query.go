@@ -402,6 +402,11 @@ func (k Keeper) TraceTx(c context.Context, req *types.QueryTraceTxRequest) (*typ
 	ctx = ctx.WithBlockTime(req.BlockTime)
 	ctx = ctx.WithHeaderHash(common.Hex2Bytes(req.BlockHash))
 	chainID, err := getChainID(ctx, req.ChainId)
+
+	// before the upgrade, we still use the old chain id
+	if ctx.BlockHeight() <= 10286999 {
+		chainID = big.NewInt(9000)
+	}
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
