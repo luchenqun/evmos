@@ -11,7 +11,7 @@ const main = async () => {
     console.log(`fetch chainId: ${network.chainId}\n`);
 
     const oldChainId = '9000';
-    const newChainId = '168168';
+    const newChainId = '202002';
     const gasLimit = '21000';
     const gasPrice = '10000000000';
 

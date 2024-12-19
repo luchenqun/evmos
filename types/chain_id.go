@@ -24,11 +24,11 @@ var (
 		regexEpochSeparator,
 		regexEpoch))
 
-	// DepassEvmChainID depass reset evm chain id from 9000 to 168168
-	DepassEvmChainID int64 = 168168
+	// DepassEvmChainID depass reset evm chain id from 9000 to 202002
+	DepassEvmChainID int64 = 202002
 
-	// DepassCosmosChainID depass reset evm chain id from 9000 to 168168
-	DepassCosmosChainID string = "depass_168168-1"
+	// DepassCosmosChainID depass reset evm chain id from 9000 to 202002
+	DepassCosmosChainID string = "depass_202002-1"
 )
 
 // IsValidChainID returns false if the given chain identifier is incorrectly formatted.

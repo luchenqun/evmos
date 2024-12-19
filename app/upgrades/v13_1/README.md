@@ -54,7 +54,7 @@
       "content": {
         "@type": "/cosmos.upgrade.v1beta1.SoftwareUpgradeProposal",
         "title": "Software upgrades: reset evm chain id",
-        "description": "reset evm chain id from 9000 to 168168",
+        "description": "reset evm chain id from 9000 to 202002",
         "plan": {
           "name": "v13.1.0",
           "info": "",
